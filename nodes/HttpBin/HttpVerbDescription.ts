@@ -38,6 +38,18 @@ export const httpVerbOperations: INodeProperties[] = [
 					},
 				},
 			},
+			{
+				name: 'Test Trigger',
+				value: 'testTrigger',
+				description: 'Trigger a test execution with pre-execution API call',
+				action: 'Execute a test trigger with API call',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/uuid',
+					},
+				},
+			},
 		],
 		default: 'get',
 	},
@@ -237,6 +249,86 @@ const deleteOperation: INodeProperties[] = [
 	},
 ];
 
+// Here we define what to show when the Test Trigger Operation is selected.
+// We do that by adding `operation: ["testTrigger"]` to `displayOptions.show`
+const testTriggerOperation: INodeProperties[] = [
+	{
+		displayName: 'Test Message',
+		name: 'testMessage',
+		type: 'string',
+		default: 'This is a test execution with API call',
+		description: 'Custom message to include in the test output',
+		displayOptions: {
+			show: {
+				resource: ['httpVerb'],
+				operation: ['testTrigger'],
+			},
+		},
+	},
+	{
+		displayName: 'Include Timestamp',
+		name: 'includeTimestamp',
+		type: 'boolean',
+		default: true,
+		description: 'Whether to include a timestamp in the test output',
+		displayOptions: {
+			show: {
+				resource: ['httpVerb'],
+				operation: ['testTrigger'],
+			},
+		},
+	},
+	{
+		displayName: 'Sample Data Count',
+		name: 'sampleDataCount',
+		type: 'number',
+		default: 1,
+		typeOptions: {
+			minValue: 1,
+			maxValue: 10,
+		},
+		description: 'Number of sample data items to generate (1-10)',
+		displayOptions: {
+			show: {
+				resource: ['httpVerb'],
+				operation: ['testTrigger'],
+			},
+		},
+	},
+	{
+		displayName: 'Pre-Execution API Endpoint Name or ID',
+		name: 'preExecutionEndpoint',
+		type: 'options',
+		default: '',
+		typeOptions: {
+			loadOptionsMethod: 'getAvailableTriggers',
+		},
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
+		displayOptions: {
+			show: {
+				resource: ['httpVerb'],
+				operation: ['testTrigger'],
+			},
+		},
+	},
+	{
+		displayName: 'HTTP Method Name or ID',
+		name: 'httpMethodTest',
+		type: 'options',
+		default: '',
+		typeOptions: {
+			loadOptionsMethod: 'getAvailableHttpMethods',
+		},
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
+		displayOptions: {
+			show: {
+				resource: ['httpVerb'],
+				operation: ['testTrigger'],
+			},
+		},
+	},
+];
+
 export const httpVerbFields: INodeProperties[] = [
 	/* -------------------------------------------------------------------------- */
 	/*                                httpVerb:get                                */
@@ -247,4 +339,9 @@ export const httpVerbFields: INodeProperties[] = [
 	/*                              httpVerb:delete                               */
 	/* -------------------------------------------------------------------------- */
 	...deleteOperation,
+
+	/* -------------------------------------------------------------------------- */
+	/*                           httpVerb:testTrigger                             */
+	/* -------------------------------------------------------------------------- */
+	...testTriggerOperation,
 ];

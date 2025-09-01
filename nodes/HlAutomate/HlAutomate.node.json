@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-base.hlAutomate",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Automation", "CRM", "Marketing"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://hlautomate.com/docs/authentication"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://hlautomate.com/docs"
+			}
+		]
+	}
+}
