@@ -103,6 +103,12 @@ export const locationOperations: INodeProperties[] = [
 				description: 'Update an existing GHL location',
 				action: 'Update a location',
 			},
+			{
+				name: 'Get',
+				value: 'get',
+				description: 'Get a GHL location',
+				action: 'Get a location',
+			},
 		],
 		default: 'create',
 	},
@@ -184,6 +190,22 @@ const locationFields: INodeProperties[] = [
 		},
 		default: '',
 		description: 'The ID of the location to update',
+	},
+	// Location email field for find->get
+	{
+		displayName: 'Email Address',
+		name: 'email',
+		type: 'string',
+		placeholder: 'name@email.com',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['location'],
+				operation: ['get'],
+			},
+		},
+		default: '',
+		description: 'Location email address',
 	},
 	// Location Settings
 	{

@@ -321,9 +321,21 @@ async function handleLocationOperation(context: IExecuteFunctions, operation: st
 			};
 
 			return await makeAuthenticatedRequest(context, 'PUT', '/ghl', accessToken, updateRequestBody);
+		case 'get':
+			// Get all the form data for update
+			const emailAddress = context.getNodeParameter('email', itemIndex, {}) as any;
+			// const locationId = context.getNodeParameter('locationId', itemIndex) as string;
 
+			// Get credentials for GHL API key
+			// const updateCredentials = await context.getCredentials('hlautomateApi');
+			const reqBody = {
+				email: emailAddress
+			};
+
+			return await makeAuthenticatedRequest(context, 'GET', '/ghl', accessToken, reqBody);
+	
 		default:
-			throw new NodeOperationError(context.getNode(), `Unknown location operation: ${operation}`);
+			throw new NodeOperationError(context.getNode(), `Unknown location get operation: ${operation}`);
 	}
 }
 
