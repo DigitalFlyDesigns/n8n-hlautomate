@@ -1,48 +1,32 @@
-# n8n-nodes-_node-name_
+# n8n-hlautomate
 
-This is an n8n community node. It lets you use _app/service name_ in your n8n workflows.
+This repository provides custom nodes and credentials for the [n8n](https://n8n.io/) workflow automation platform, enabling integration with HL Automate, HttpBin, and example services.
 
-_App/service name_ is _one or two sentences describing the service this node integrates with_.
+## Features
+- **HL Automate Node:** Interact with the HL Automate API for contacts, locations, and users, with dynamic options and credential-based authentication.
 
-[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
-
-[Installation](#installation)  
-[Operations](#operations)  
-[Credentials](#credentials)  <!-- delete if no auth needed -->  
-[Compatibility](#compatibility)  
-[Usage](#usage)  <!-- delete if not using this section -->  
-[Resources](#resources)  
-[Version history](#version-history)  <!-- delete if not using this section -->  
+## Project Structure
+- `nodes/` — Node implementations, grouped by integration
+- `credentials/` — Custom credential types for API authentication
+- `dist/` — Build output (ignored in git)
+- `gulpfile.js` — Copies icons to `dist/` during build
 
 ## Installation
+Follow the [n8n community node installation guide](https://docs.n8n.io/integrations/community-nodes/installation/).
 
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
-
-## Operations
-
-_List the operations supported by your node._
-
-## Credentials
-
-_If users need to authenticate with the app/service, provide details here. You should include prerequisites (such as signing up with the service), available authentication methods, and how to set them up._
-
-## Compatibility
-
-_State the minimum n8n version, as well as which versions you test against. You can also include any known version incompatibility issues._
+## Development
+- **Build:** `npm run build` (cleans, compiles, copies icons)
+- **Watch:** `npm run dev` (TypeScript watch mode)
+- **Lint:** `npm run lint` (n8n custom ESLint rules)
+- **Format:** `npm run format` (Prettier)
+- **Prepublish:** `npm run prepublishOnly` (build + lint with stricter rules)
 
 ## Usage
-
-_This is an optional section. Use it to help users with any difficult or confusing aspects of the node._
-
-_By the time users are looking for community nodes, they probably already know n8n basics. But if you expect new users, you can link to the [Try it out](https://docs.n8n.io/try-it-out/) documentation to help them get started._
+After installation, the custom nodes will appear in the n8n editor. Configure credentials as required for each node.
 
 ## Resources
+- [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
+- [HL Automate API docs](https://hlautomate.com/docs)
 
-* [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
-* _Link to app/service documentation._
-
-## Version history
-
-_This is another optional section. If your node has multiple versions, include a short description of available versions and what changed, as well as any compatibility impact._
 
 

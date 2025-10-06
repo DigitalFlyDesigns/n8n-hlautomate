@@ -1,7 +1,7 @@
 {
-  "name": "n8n-hlautomate",
-  "version": "0.1.0",
-  "description": "",
+  "name": "n8n-nodes-hlautomate",
+  "version": "1.0.2",
+  "description": "Automate GoHighlevel with n8n via HlAutomate",
   "keywords": [
     "n8n-community-node-package"
   ],
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/DigitalFlyDesigns/n8n-hlautomate.git"
   },
   "engines": {
     "node": ">=20.15"
@@ -33,14 +33,10 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HlAutomateApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
+      "dist/credentials/HlAutomateApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HlAutomate/HlAutomate.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/HlAutomate/HlAutomate.node.js"
     ]
   },
   "devDependencies": {
