@@ -1,6 +1,6 @@
 # n8n-hlautomate
 
-This repository provides custom nodes and credentials for the [n8n](https://n8n.io/) workflow automation platform, enabling integration with HL Automate, HttpBin, and example services.
+This repository provides custom nodes and credentials for the [n8n](https://n8n.io/) workflow automation platform, enabling integration with HL Automate.
 
 ## Features
 - **HL Automate Node:** Interact with the HL Automate API for contacts, locations, and users, with dynamic options and credential-based authentication.

@@ -48,8 +48,138 @@ export const contactOperations: INodeProperties[] = [
 	},
 ];
 
-// User Operations
-export const userOperations: INodeProperties[] = [
+// Calendar Appointment Operations
+export const calendarAppointmentOperations: INodeProperties[] = [
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['calendarAppointment'],
+			},
+		},
+		options: [
+			{
+				name: 'Create',
+				value: 'create',
+				description: 'Create a calendar appointment',
+				action: 'Create a calendar appointment',
+			},
+			{
+				name: 'Update',
+				value: 'update',
+				description: 'Update a calendar appointment status',
+				action: 'Update a calendar appointment status',
+			},
+		],
+		default: 'create',
+	},
+];
+
+// Calendar Appointment Fields
+export const calendarAppointmentFields: INodeProperties[] = [
+	{
+		displayName: 'Calendar ID',
+		name: 'calendarId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['calendarAppointment'],
+				operation: ['create'],
+			},
+		},
+		default: '',
+
+	},
+	{
+		displayName: 'Location ID',
+		name: 'locationId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['calendarAppointment'],
+				operation: ['create'],
+			},
+		},
+		default: '',
+
+	},
+	{
+		displayName: 'Selected Timezone Name or ID',
+		name: 'selectedTimezone',
+		type: 'options',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['calendarAppointment'],
+				operation: ['create'],
+			},
+		},
+		default: '',
+		description: 'Timezone for the appointment. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+		typeOptions: {
+			loadOptionsMethod: 'getTimezones',
+		},
+	},
+	{
+		displayName: 'Selected Slot',
+		name: 'selectedSlot',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['calendarAppointment'],
+				operation: ['create'],
+			},
+		},
+		default: '',
+		   description: 'ISO 8601 datetime with timezone offset, e.g. 2021-02-05T11:00:00+05:30',
+	   },
+		// Update fields
+		{
+			displayName: 'Appointment ID',
+			name: 'appointmentId',
+			type: 'string',
+			required: true,
+			displayOptions: {
+				show: {
+					resource: ['calendarAppointment'],
+					operation: ['update'],
+				},
+			},
+			default: '',
+
+		},
+		{
+			displayName: 'Status',
+			name: 'status',
+			type: 'options',
+			required: true,
+			// eslint-disable-next-line n8n-nodes-base/node-param-options-type-unsorted-items
+			options: [
+				{ name: 'Confirmed', value: 'confirmed' },
+				{ name: 'Cancelled', value: 'cancelled' },
+				{ name: 'Showed', value: 'showed' },
+				{ name: 'No Show', value: 'noshow' },
+				{ name: 'Invalid', value: 'invalid' },
+			],
+			displayOptions: {
+				show: {
+					resource: ['calendarAppointment'],
+					operation: ['update'],
+				},
+			},
+			default: 'confirmed',
+			description: 'Status of the appointment',
+		},
+	];
+
+	// User Operations
+	export const userOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
@@ -895,4 +1025,9 @@ export const hlautomateFields: INodeProperties[] = [
 	/*                                user                                        */
 	/* -------------------------------------------------------------------------- */
 	...userFields,
+
+	/* -------------------------------------------------------------------------- */
+	/*                                calendarAppointment                         */
+	/* -------------------------------------------------------------------------- */
+	...calendarAppointmentFields,
 ];

@@ -10,13 +10,14 @@ import {
 	IHttpRequestOptions,
 	IHttpRequestMethods,
 } from 'n8n-workflow';
-import { contactOperations, locationOperations, userOperations, hlautomateFields } from './HlAutomateDescription';
+import { contactOperations, locationOperations, userOperations, hlautomateFields, calendarAppointmentOperations } from './HlAutomateDescription';
 
 export class HlAutomate implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'HL Automate',
 		name: 'hlAutomate',
-		icon: 'file:hlautomate.svg',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
+		icon: 'file:hlautomate.png',
 		group: ['automation'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
@@ -39,27 +40,32 @@ export class HlAutomate implements INodeType {
 				name: 'resource',
 				type: 'options',
 				noDataExpression: true,
-				options: [
-					{
-						name: 'Contact',
-						value: 'contact',
-					},
-					{
-						name: 'Location',
-						value: 'location',
-					},
-					{
-						name: 'User',
-						value: 'user',
-					},
-				],
+				   options: [
+					   {
+						   name: 'Contact',
+						   value: 'contact',
+					   },
+					   {
+						   name: 'Location',
+						   value: 'location',
+					   },
+					   {
+						   name: 'User',
+						   value: 'user',
+					   },
+					   {
+						   name: 'Calendar Appointment',
+						   value: 'calendarAppointment',
+					   },
+				   ],
 				default: 'contact',
 			},
 
-			...contactOperations,
-			...locationOperations,
-			...userOperations,
-			...hlautomateFields,
+			   ...contactOperations,
+			   ...locationOperations,
+			   ...userOperations,
+			   ...calendarAppointmentOperations,
+			   ...hlautomateFields,
 		],
 	};
 
@@ -146,6 +152,8 @@ export class HlAutomate implements INodeType {
 					responseData = await handleLocationOperation(this, operation, i, accessToken);
 				} else if (resource === 'user') {
 					responseData = await handleUserOperation(this, operation, i, accessToken);
+				} else if (resource === 'calendarAppointment') {
+					responseData = await handleCalendarAppointmentOperation(this, operation, i, accessToken);
 				}
 
 				returnData.push({
@@ -172,6 +180,50 @@ export class HlAutomate implements INodeType {
 		}
 
 		return [returnData];
+	}
+}
+
+async function handleCalendarAppointmentOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {
+	// Get credentials for GHL API key
+	const credentials = await context.getCredentials('hlautomateApi');
+
+	switch (operation) {
+		case 'create': {
+			// Get all the form data
+			const calendarId = context.getNodeParameter('calendarId', itemIndex) as string;
+			const locationId = context.getNodeParameter('locationId', itemIndex) as string;
+			const selectedTimezone = context.getNodeParameter('selectedTimezone', itemIndex) as string;
+			const selectedSlot = context.getNodeParameter('selectedSlot', itemIndex) as string;
+
+			// Prepare the request body
+			const requestBody = {
+				ghl_api_key: credentials.ghl_agency_key,
+				calendarId,
+				locationId,
+				selectedTimezone,
+				selectedSlot,
+			};
+
+			return await makeAuthenticatedRequest(context, 'POST', '/ghlcalendarteam/appointments', accessToken, requestBody);
+		}
+		case 'update': {
+			// Get all the form data for update
+			const locationId = context.getNodeParameter('locationId', itemIndex) as string;
+			const appointmentId = context.getNodeParameter('appointmentId', itemIndex) as string;
+			const status = context.getNodeParameter('status', itemIndex) as string;
+
+			// Prepare the request body for update
+			const requestBody = {
+				ghl_api_key: credentials.ghl_agency_key,
+				locationId,
+				appointmentId,
+				status,
+			};
+
+			return await makeAuthenticatedRequest(context, 'PUT', '/ghlcalendarteam/appointments', accessToken, requestBody);
+		}
+		default:
+			throw new NodeOperationError(context.getNode(), `Unknown calendarAppointment operation: ${operation}`);
 	}
 }
 
