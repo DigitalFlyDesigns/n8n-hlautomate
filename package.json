@@ -33,10 +33,12 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/HlAutomateApi.credentials.js"
+      "dist/credentials/HlAutomateApi.credentials.js",
+      "dist/credentials/HlAutomateApiV2.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/HlAutomate/HlAutomate.node.js"
+      "dist/nodes/HlAutomate/HlAutomate.node.js",
+      "dist/nodes/HlAutomateV2/HlAutomateV2.node.js"
     ]
   },
   "devDependencies": {

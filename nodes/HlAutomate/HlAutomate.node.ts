@@ -277,23 +277,23 @@ async function handleContactOperation(context: IExecuteFunctions, operation: str
 	switch (operation) {
 		case 'create':
 			const createData = context.getNodeParameter('contactData', itemIndex) as any;
-			return await makeAuthenticatedRequest(context, 'POST', '/contacts', accessToken, createData);
+			return await makeAuthenticatedRequest(context, 'POST', '/ghlcontact', accessToken, createData);
 
 		case 'get':
 			const getContactId = context.getNodeParameter('contactId', itemIndex) as string;
-			return await makeAuthenticatedRequest(context, 'GET', `/contacts/${getContactId}`, accessToken);
+			return await makeAuthenticatedRequest(context, 'GET', `/ghlcontact/${getContactId}`, accessToken);
 
 		case 'update':
 			const updateContactId = context.getNodeParameter('contactId', itemIndex) as string;
 			const updateData = context.getNodeParameter('contactData', itemIndex) as any;
-			return await makeAuthenticatedRequest(context, 'PUT', `/contacts/${updateContactId}`, accessToken, updateData);
+			return await makeAuthenticatedRequest(context, 'PUT', `/ghlcontact/${updateContactId}`, accessToken, updateData);
 
 		case 'delete':
 			const deleteContactId = context.getNodeParameter('contactId', itemIndex) as string;
-			return await makeAuthenticatedRequest(context, 'DELETE', `/contacts/${deleteContactId}`, accessToken);
+			return await makeAuthenticatedRequest(context, 'DELETE', `/ghlcontact/${deleteContactId}`, accessToken);
 
 		case 'list':
-			return await makeAuthenticatedRequest(context, 'GET', '/contacts', accessToken);
+			return await makeAuthenticatedRequest(context, 'GET', '/ghlcontact', accessToken);
 
 		default:
 			throw new NodeOperationError(context.getNode(), `Unknown contact operation: ${operation}`);
