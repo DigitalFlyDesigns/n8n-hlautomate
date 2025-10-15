@@ -13,6 +13,7 @@ import {
 	IHttpRequestOptions,
 	IHttpRequestMethods,
 } from 'n8n-workflow';
+import { hlAutomateV2Operations, hlAutomateV2Fields } from './HlAutomateV2Description';
 
 export class HlAutomateV2 implements INodeType {
 	description: INodeTypeDescription = {
@@ -49,6 +50,8 @@ export class HlAutomateV2 implements INodeType {
 				],
 				default: 'contact',
 			},
+            ...hlAutomateV2Operations,
+            ...hlAutomateV2Fields,
 		],
 	};
 
