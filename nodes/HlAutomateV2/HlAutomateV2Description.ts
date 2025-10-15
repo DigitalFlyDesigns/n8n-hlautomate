@@ -46,6 +46,51 @@ export const hlAutomateV2Operations: INodeProperties[] = [
         ],
         default: 'get',
     },
+    // Location Operations
+    {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+            show: {
+                resource: ['location'],
+            },
+        },
+        options: [
+            {
+                name: 'Create',
+                value: 'create',
+                description: 'Create a new location',
+                action: 'Create a location',
+            },
+            {
+                name: 'Delete',
+                value: 'delete',
+                description: 'Delete a location',
+                action: 'Delete a location',
+            },
+            {
+                name: 'Get',
+                value: 'get',
+                description: 'Get a location',
+                action: 'Get a location',
+            },
+            {
+                name: 'List',
+                value: 'list',
+                description: 'List all locations',
+                action: 'List locations',
+            },
+            {
+                name: 'Update',
+                value: 'update',
+                description: 'Update a location',
+                action: 'Update a location',
+            },
+        ],
+        default: 'get',
+    },
 ];
 
 // Contact Fields
@@ -216,6 +261,151 @@ export const hlAutomateV2Fields: INodeProperties[] = [
             {
                 displayName: 'Website',
                 name: 'website',
+                type: 'string',
+                default: '',
+            },
+        ],
+    },
+    // Email field for location operations
+    {
+        displayName: 'Email',
+        name: 'email',
+        type: 'string',
+        placeholder: 'name@email.com',
+        displayOptions: {
+            show: {
+                resource: ['location'],
+                operation: ['get'],
+            },
+        },
+        default: '',
+        description: 'Email to search for',
+    },
+    // Location ID field for location operations
+    {
+        displayName: 'Location ID',
+        name: 'locationId',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['location'],
+                operation: ['get', 'update', 'delete'],
+            },
+        },
+        default: '',
+        description: 'The ID of the location',
+    },
+    // Location data fields for create/update
+    {
+        displayName: 'Location Data',
+        name: 'locationData',
+        type: 'collection',
+        placeholder: 'Add Field',
+        displayOptions: {
+            show: {
+                resource: ['location'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: {},
+        options: [
+            {
+                displayName: 'Address',
+                name: 'loc_address',
+                type: 'string',
+                default: '',
+            },
+            {
+                displayName: 'Allow Duplicate Contacts',
+                name: 'loc_setting_allowDuplicateContact',
+                type: 'boolean',
+                default: false,
+            },
+            {
+                displayName: 'Allow Duplicate Opportunities',
+                name: 'loc_setting_allowDuplicateOpportunity',
+                type: 'boolean',
+                default: false,
+            },
+            {
+                displayName: 'Allow Facebook Name Merge',
+                name: 'loc_setting_allowFacebookNameMerge',
+                type: 'boolean',
+                default: false,
+            },
+            {
+                displayName: 'Business Name',
+                name: 'loc_bname',
+                type: 'string',
+                default: '',
+            },
+            {
+                displayName: 'City',
+                name: 'loc_city',
+                type: 'string',
+                default: '',
+            },
+            {
+                displayName: 'Country',
+                name: 'loc_country',
+                type: 'string',
+                default: '',
+            },
+            {
+                displayName: 'Custom Values',
+                name: 'customValues',
+                type: 'json',
+                default: '{}',
+                description: 'Custom values as JSON object',
+            },
+            {
+                displayName: 'Disable Contact Timezone',
+                name: 'loc_setting_disableContactTimezone',
+                type: 'boolean',
+                default: false,
+            },
+            {
+                displayName: 'Email',
+                name: 'loc_email',
+                type: 'string',
+                default: '',
+                placeholder: 'name@email.com',
+            },
+            {
+                displayName: 'Phone',
+                name: 'loc_phone',
+                type: 'string',
+                default: '',
+            },
+            {
+                displayName: 'Postal Code',
+                name: 'loc_postalCode',
+                type: 'string',
+                default: '',
+            },
+            {
+                displayName: 'Snapshot',
+                name: 'snapshot',
+                type: 'string',
+                default: '',
+                description: 'Location snapshot data',
+            },
+            {
+                displayName: 'State',
+                name: 'loc_state',
+                type: 'string',
+                default: '',
+            },
+            {
+                displayName: 'Timezone',
+                name: 'loc_timezone',
+                type: 'string',
+                default: '',
+            },
+            {
+                displayName: 'Website',
+                name: 'loc_website',
                 type: 'string',
                 default: '',
             },

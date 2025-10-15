@@ -52,6 +52,10 @@ export class HlAutomateV2 implements INodeType {
 						name: 'Contact',
 						value: 'contact',
 					},
+					{
+						name: 'Location',
+						value: 'location',
+					},
 				],
 				default: 'contact',
 			},
@@ -229,8 +233,47 @@ async function handleUserOperation(context: IExecuteFunctions, operation: string
 };
 
 async function handleLocationOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {
+	switch (operation) {
+		case 'create':
+			const createData = context.getNodeParameter('locationData', itemIndex) as any;
+			return await makeAuthenticatedRequest(context, 'POST', '/ghl', accessToken, createData);
 
-};
+		case 'get': {
+			// For get we require locationId and allow email as optional filter
+			const email = context.getNodeParameter('email', itemIndex, '') as string;
+			const locationId = context.getNodeParameter('locationId', itemIndex) as string;
+
+			if (!locationId) {
+				throw new NodeOperationError(context.getNode(), 'locationId is required for get location');
+			}
+
+			const params: string[] = [];
+			if (email) params.push(`email=${encodeURIComponent(email)}`);
+			params.push(`locationId=${encodeURIComponent(locationId)}`);
+
+			const endpoint = `/ghl?${params.join('&')}`;
+			return await makeAuthenticatedRequest(context, 'GET', endpoint, accessToken);
+		}
+
+		case 'update': {
+			const locationId = context.getNodeParameter('locationId', itemIndex) as string;
+			const updateData = context.getNodeParameter('locationData', itemIndex) as any;
+			updateData.locationId = locationId;
+			return await makeAuthenticatedRequest(context, 'PUT', `/ghl`, accessToken, updateData);
+		}
+
+		case 'delete': {
+			const locationId = context.getNodeParameter('locationId', itemIndex) as string;
+			return await makeAuthenticatedRequest(context, 'DELETE', `/ghl/${locationId}`, accessToken);
+		}
+
+		case 'list':
+			return await makeAuthenticatedRequest(context, 'GET', '/ghl', accessToken);
+
+		default:
+			throw new NodeOperationError(context.getNode(), `Unknown location operation: ${operation}`);
+	}
+}
 
 async function handleContactOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {
 	switch (operation) {
