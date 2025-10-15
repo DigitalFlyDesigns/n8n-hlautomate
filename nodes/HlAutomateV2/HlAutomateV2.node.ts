@@ -13,7 +13,12 @@ import {
 	IHttpRequestOptions,
 	IHttpRequestMethods,
 } from 'n8n-workflow';
+
 import { hlAutomateV2Operations, hlAutomateV2Fields } from './HlAutomateV2Description';
+
+// Set the API base URL once and use everywhere
+const HLAUTOMATE_API_BASE_URL = 'https://api.hlautomate.com/v2';
+const HLAUTOMATE_API_BASE_URL_V1 = 'https://api.hlautomate.com/v1';
 
 export class HlAutomateV2 implements INodeType {
 	description: INodeTypeDescription = {
@@ -50,68 +55,68 @@ export class HlAutomateV2 implements INodeType {
 				],
 				default: 'contact',
 			},
-            ...hlAutomateV2Operations,
-            ...hlAutomateV2Fields,
+			...hlAutomateV2Operations,
+			...hlAutomateV2Fields,
 		],
 	};
 
 	methods = {
 		loadOptions: {
 			// Method to dynamically load available timezones
-						async getTimezones(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-							try {
-								// Get credentials for authentication
-								const credentials = await this.getCredentials('hlautomateApiV2');
-								
-								// Use existing authentication method
-								const accessToken = await authenticateAndGetToken(this as any, credentials);
-								
-								// Fetch timezones from API
-								const timezonesResponse = await this.helpers.httpRequest({
-									method: 'GET',
-									url: 'https://api.hlautomate.com/v2/ghl/timezones',
-									headers: {
-										'Accept': 'application/json',
-										'Authorization': `Bearer ${accessToken}`,
-									},
-									json: true,
-								});
-								
-								// Process the response and return options
-								if (Array.isArray(timezonesResponse)) {
-									return timezonesResponse.map((timezone: any) => ({
-										name: timezone.displayName || timezone.name || timezone.id,
-										value: timezone.id || timezone.value,
-									}));
-								} else if (timezonesResponse && typeof timezonesResponse === 'object') {
-									// Handle case where response is an object with timezone data
-									const timezones = timezonesResponse.timezones || timezonesResponse.data || timezonesResponse;
-									if (Array.isArray(timezones)) {
-										return timezones.map((timezone: any) => ({
-											name: timezone.displayName || timezone.name || timezone.id,
-											value: timezone.id || timezone.value,
-										}));
-									}
-								}
-								
-								// Fallback to basic timezones if response format is unexpected
-								return [
-									{ name: 'US/Central', value: 'US/Central' },
-									{ name: 'US/Eastern', value: 'US/Eastern' },
-									{ name: 'US/Pacific', value: 'US/Pacific' },
-									{ name: 'US/Mountain', value: 'US/Mountain' },
-								];
-								
-							} catch (error) {
-								// Fallback to basic timezones if API call fails
-								return [
-									{ name: 'US/Central', value: 'US/Central' },
-									{ name: 'US/Eastern', value: 'US/Eastern' },
-									{ name: 'US/Pacific', value: 'US/Pacific' },
-									{ name: 'US/Mountain', value: 'US/Mountain' },
-								];
-							}
-						},
+			async getTimezones(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				try {
+					// Get credentials for authentication
+					const credentials = await this.getCredentials('hlautomateApiV2');
+
+					// Use existing authentication method
+					const accessToken = await authenticateAndGetToken(this as any, credentials);
+
+					   // Fetch timezones from API
+					   const timezonesResponse = await this.helpers.httpRequest({
+						   method: 'GET',
+						   url: `${HLAUTOMATE_API_BASE_URL_V1}/ghl/timezones`,
+						   headers: {
+							   'Accept': 'application/json',
+							   'Authorization': `Bearer ${accessToken}`,
+						   },
+						   json: true,
+					   });
+
+					// Process the response and return options
+					if (Array.isArray(timezonesResponse)) {
+						return timezonesResponse.map((timezone: any) => ({
+							name: timezone.displayName || timezone.name || timezone.id,
+							value: timezone.id || timezone.value,
+						}));
+					} else if (timezonesResponse && typeof timezonesResponse === 'object') {
+						// Handle case where response is an object with timezone data
+						const timezones = timezonesResponse.timezones || timezonesResponse.data || timezonesResponse;
+						if (Array.isArray(timezones)) {
+							return timezones.map((timezone: any) => ({
+								name: timezone.displayName || timezone.name || timezone.id,
+								value: timezone.id || timezone.value,
+							}));
+						}
+					}
+
+					// Fallback to basic timezones if response format is unexpected
+					return [
+						{ name: 'US/Central', value: 'US/Central' },
+						{ name: 'US/Eastern', value: 'US/Eastern' },
+						{ name: 'US/Pacific', value: 'US/Pacific' },
+						{ name: 'US/Mountain', value: 'US/Mountain' },
+					];
+
+				} catch (error) {
+					// Fallback to basic timezones if API call fails
+					return [
+						{ name: 'US/Central', value: 'US/Central' },
+						{ name: 'US/Eastern', value: 'US/Eastern' },
+						{ name: 'US/Pacific', value: 'US/Pacific' },
+						{ name: 'US/Mountain', value: 'US/Mountain' },
+					];
+				}
+			},
 		},
 	};
 
@@ -121,7 +126,7 @@ export class HlAutomateV2 implements INodeType {
 
 		// Get credentials
 		const credentials = await this.getCredentials('hlautomateApiV2');
-		
+
 		for (let i = 0; i < items.length; i++) {
 			try {
 				const resource = this.getNodeParameter('resource', i) as string;
@@ -171,22 +176,22 @@ export class HlAutomateV2 implements INodeType {
 
 // Helper functions
 async function authenticateAndGetToken(context: IExecuteFunctions, credentials: any): Promise<string> {
-	const authOptions: IHttpRequestOptions = {
-		method: 'POST' as IHttpRequestMethods,
-		url: 'https://api.hlautomate.com/v2/auth/login',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: {
-			email: credentials.email,
-			password: credentials.password,
-		},
-		json: true,
-	};
+	   const authOptions: IHttpRequestOptions = {
+		   method: 'POST' as IHttpRequestMethods,
+		   url: `${HLAUTOMATE_API_BASE_URL}/auth/login`,
+		   headers: {
+			   'Content-Type': 'application/json',
+		   },
+		   body: {
+			   email: credentials.email,
+			   password: credentials.password,
+		   },
+		   json: true,
+	   };
 
 	try {
 		const authResponse = await context.helpers.httpRequest(authOptions);
-		
+
 		if (authResponse.tokens && authResponse.tokens.access && authResponse.tokens.access.token) {
 			return authResponse.tokens.access.token;
 		} else {
@@ -198,15 +203,15 @@ async function authenticateAndGetToken(context: IExecuteFunctions, credentials: 
 }
 
 async function makeAuthenticatedRequest(context: IExecuteFunctions, method: IHttpRequestMethods, endpoint: string, accessToken: string, body?: any): Promise<any> {
-	const options: IHttpRequestOptions = {
-		method,
-		url: `https://api.hlautomate.com/v2${endpoint}`,
-		headers: {
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${accessToken}`,
-		},
-		json: true,
-	};
+	   const options: IHttpRequestOptions = {
+		   method,
+		   url: `${HLAUTOMATE_API_BASE_URL}${endpoint}`,
+		   headers: {
+			   'Content-Type': 'application/json',
+			   'Authorization': `Bearer ${accessToken}`,
+		   },
+		   json: true,
+	   };
 
 	if (body) {
 		options.body = body;
@@ -220,7 +225,7 @@ async function handleCalendarAppointmentOperation(context: IExecuteFunctions, op
 };
 
 async function handleUserOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {
-	
+
 };
 
 async function handleLocationOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {
@@ -228,9 +233,9 @@ async function handleLocationOperation(context: IExecuteFunctions, operation: st
 };
 
 async function handleContactOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {
-    switch (operation) {
-        case 'create':
-            const createData = context.getNodeParameter('contactData', itemIndex) as any;
+	switch (operation) {
+		case 'create':
+			const createData = context.getNodeParameter('contactData', itemIndex) as any;
 			return await makeAuthenticatedRequest(context, 'POST', '/ghlcontact', accessToken, createData);
 
 		case 'get': {
@@ -252,11 +257,11 @@ async function handleContactOperation(context: IExecuteFunctions, operation: str
 			return await makeAuthenticatedRequest(context, 'GET', endpoint, accessToken);
 		}
 
-        case 'update':
-            const updateContactId = context.getNodeParameter('contactId', itemIndex) as string;
-            const updateData = context.getNodeParameter('contactData', itemIndex) as any;
+		case 'update':
+			const updateContactId = context.getNodeParameter('contactId', itemIndex) as string;
+			const updateData = context.getNodeParameter('contactData', itemIndex) as any;
 			updateData.contact_id = updateContactId;
-            return await makeAuthenticatedRequest(context, 'PUT', `/ghlcontact`, accessToken, updateData);
+			return await makeAuthenticatedRequest(context, 'PUT', `/ghlcontact`, accessToken, updateData);
 
 		case 'delete': {
 			// For delete, send contact_id and locationId in the body
@@ -271,10 +276,10 @@ async function handleContactOperation(context: IExecuteFunctions, operation: str
 			return await makeAuthenticatedRequest(context, 'DELETE', `/ghlcontact`, accessToken, requestBody);
 		}
 
-        case 'list':
+		case 'list':
 			return await makeAuthenticatedRequest(context, 'GET', '/ghlcontact', accessToken);
 
-        default:
-            throw new NodeOperationError(context.getNode(), `Unknown contact operation: ${operation}`);
-    }
+		default:
+			throw new NodeOperationError(context.getNode(), `Unknown contact operation: ${operation}`);
+	}
 };
