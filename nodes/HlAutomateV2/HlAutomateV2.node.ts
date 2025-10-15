@@ -1,4 +1,6 @@
 /* eslint-disable n8n-nodes-base/node-filename-against-convention */
+/* eslint-disable n8n-nodes-base/node-class-description-credentials-name-unsuffixed */
+/* eslint-disable n8n-nodes-base/node-filename-against-convention */
 import {
 	IExecuteFunctions,
 	ILoadOptionsFunctions,
@@ -29,7 +31,7 @@ export class HlAutomateV2 implements INodeType {
 		usableAsTool: true,
 		credentials: [
 			{
-				name: 'hlautomateApiV2Api',
+				name: 'hlautomateApiV2',
 				required: true,
 			},
 		],
@@ -56,7 +58,7 @@ export class HlAutomateV2 implements INodeType {
 						async getTimezones(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 							try {
 								// Get credentials for authentication
-								const credentials = await this.getCredentials('hlautomateApi');
+								const credentials = await this.getCredentials('hlautomateApiV2');
 								
 								// Use existing authentication method
 								const accessToken = await authenticateAndGetToken(this as any, credentials);

@@ -1,3 +1,7 @@
+/* eslint-disable n8n-nodes-base/cred-class-name-unsuffixed */
+/* eslint-disable n8n-nodes-base/cred-class-field-name-unsuffixed */
+/* eslint-disable n8n-nodes-base/cred-filename-against-convention */
+/* eslint-disable n8n-nodes-base/cred-class-field-display-name-missing-api */
 /* eslint-disable n8n-nodes-base/cred-filename-against-convention */
 import {
 	IAuthenticateGeneric,
@@ -6,9 +10,9 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export class HlAutomateApiV2Api implements ICredentialType {
-	name = 'hlautomateApiV2Api';
-	displayName = 'HL Automate API V2 API';
+export class HlAutomateApiV2 implements ICredentialType {
+	name = 'hlautomateApiV2';
+	displayName = 'HL Automate V2';
 	documentationUrl = 'https://hlautomate.com';
 	properties: INodeProperties[] = [
 		{
