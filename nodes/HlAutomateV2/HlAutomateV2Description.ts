@@ -106,8 +106,8 @@ export const hlAutomateV2Operations: INodeProperties[] = [
             {
                 name: 'Book',
                 value: 'calendarBook',
-                description: 'Book a calendar appointment',
-                action: 'Book a calendar appointment',
+                description: 'Book a calendar appointment by date slot',
+                action: 'Book a calendar appointment by date slot',
             },
         ],
         default: 'calendarBook',
