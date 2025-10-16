@@ -57,6 +57,10 @@ export class HlAutomateV2 implements INodeType {
 						value: 'location',
 					},
 					{
+						name: 'User',
+						value: 'user',
+					},
+					{
 						name: 'Calendar Appointment',
 						value: 'calendarAppointment',
 					},
@@ -256,7 +260,135 @@ async function handleCalendarAppointmentOperation(context: IExecuteFunctions, op
 };
 
 async function handleUserOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {
+    switch (operation) {
+        case 'create':
+            // Get all the form data
+            const firstName = context.getNodeParameter('firstName', itemIndex) as string;
+            const lastName = context.getNodeParameter('lastName', itemIndex) as string;
+            const email = context.getNodeParameter('email', itemIndex) as string;
+            const password = context.getNodeParameter('password', itemIndex) as string;
+            const type = context.getNodeParameter('type', itemIndex) as string;
+            const role = context.getNodeParameter('role', itemIndex) as string;
+            const locationIds = context.getNodeParameter('locationIds', itemIndex, '') as string;
+            const phone = context.getNodeParameter('phone', itemIndex, '') as string;
+            const permissions = context.getNodeParameter('permissions', itemIndex, {}) as any;
 
+            // Convert locationIds from comma-separated string to array
+            const locationIdsArray = locationIds ? locationIds.split(',').map(id => id.trim()) : [];
+
+            // Prepare the request body
+            const requestBody = {
+                firstName,
+                lastName,
+                email,
+                password,
+                type,
+                role,
+                locationIds: locationIdsArray,
+                phone,
+                permissions: {
+                    adwordsReportingEnabled: permissions.adwordsReportingEnabled || false,
+                    appointmentsEnabled: permissions.appointmentsEnabled || false,
+                    assignedDataOnly: permissions.assignedDataOnly || false,
+                    attributionsReportingEnabled: permissions.attributionsReportingEnabled || false,
+                    bulkRequestsEnabled: permissions.bulkRequestsEnabled || false,
+                    phoneCallEnabled: permissions.phoneCallEnabled || false,
+                    contactsEnabled: permissions.contactsEnabled || false,
+                    conversationsEnabled: permissions.conversationsEnabled || false,
+                    dashboardStatsEnabled: permissions.dashboardStatsEnabled || false,
+                    facebookAdsReportingEnabled: permissions.facebookAdsReportingEnabled || false,
+                    funnelsEnabled: permissions.funnelsEnabled || false,
+                    leadValueEnabled: permissions.leadValueEnabled || false,
+                    marketingEnabled: permissions.marketingEnabled || false,
+                    membershipEnabled: permissions.membershipEnabled || false,
+                    onlineListingsEnabled: permissions.onlineListingsEnabled || false,
+                    opportunitiesEnabled: permissions.opportunitiesEnabled || false,
+                    reviewsEnabled: permissions.reviewsEnabled || false,
+                    settingsEnabled: permissions.settingsEnabled || false,
+                    tagsEnabled: permissions.tagsEnabled || false,
+                    triggersEnabled: permissions.triggersEnabled || false,
+                    websitesEnabled: permissions.websitesEnabled || false,
+                    workflowsEnabled: permissions.workflowsEnabled || false,
+                }
+            };
+
+            return await makeAuthenticatedRequest(context, 'POST', '/ghluser', accessToken, requestBody);
+
+        case 'get': {
+            // For get we allow email as optional filter
+            const email = context.getNodeParameter('email', itemIndex, '') as string;
+
+            const params: string[] = [];
+            if (email) params.push(`email=${encodeURIComponent(email)}`);
+
+            const endpoint = `/ghluser${params.length > 0 ? '?' + params.join('&') : ''}`;
+            return await makeAuthenticatedRequest(context, 'GET', endpoint, accessToken);
+        }
+
+        case 'update':
+            // Get all the form data for update
+            const updateUserId = context.getNodeParameter('userId', itemIndex) as string;
+            const updateFirstName = context.getNodeParameter('firstName', itemIndex, '') as string;
+            const updateLastName = context.getNodeParameter('lastName', itemIndex, '') as string;
+            const updateEmail = context.getNodeParameter('email', itemIndex, '') as string;
+            const updatePassword = context.getNodeParameter('password', itemIndex, '') as string;
+            const updateType = context.getNodeParameter('type', itemIndex, '') as string;
+            const updateRole = context.getNodeParameter('role', itemIndex, '') as string;
+            const updateLocationIds = context.getNodeParameter('locationIds', itemIndex, '') as string;
+            const updatePhone = context.getNodeParameter('phone', itemIndex, '') as string;
+            const updatePermissions = context.getNodeParameter('permissions', itemIndex, {}) as any;
+
+            // Convert locationIds from comma-separated string to array
+            const updateLocationIdsArray = updateLocationIds ? updateLocationIds.split(',').map(id => id.trim()) : [];
+
+            // Prepare the request body for update
+            const updateRequestBody: any = {
+                userId: updateUserId,
+            };
+
+            // Only include fields that have values (for partial updates)
+            if (updateFirstName) updateRequestBody.firstName = updateFirstName;
+            if (updateLastName) updateRequestBody.lastName = updateLastName;
+            if (updateEmail) updateRequestBody.email = updateEmail;
+            if (updatePassword) updateRequestBody.password = updatePassword;
+            if (updateType) updateRequestBody.type = updateType;
+            if (updateRole) updateRequestBody.role = updateRole;
+            if (updateLocationIds) updateRequestBody.locationIds = updateLocationIdsArray;
+            if (updatePhone) updateRequestBody.phone = updatePhone;
+
+            // Add permissions if any are provided
+            if (Object.keys(updatePermissions).length > 0) {
+                updateRequestBody.permissions = {
+                    adwordsReportingEnabled: updatePermissions.adwordsReportingEnabled || false,
+                    appointmentsEnabled: updatePermissions.appointmentsEnabled || false,
+                    assignedDataOnly: updatePermissions.assignedDataOnly || false,
+                    attributionsReportingEnabled: updatePermissions.attributionsReportingEnabled || false,
+                    bulkRequestsEnabled: updatePermissions.bulkRequestsEnabled || false,
+                    phoneCallEnabled: updatePermissions.phoneCallEnabled || false,
+                    contactsEnabled: updatePermissions.contactsEnabled || false,
+                    conversationsEnabled: updatePermissions.conversationsEnabled || false,
+                    dashboardStatsEnabled: updatePermissions.dashboardStatsEnabled || false,
+                    facebookAdsReportingEnabled: updatePermissions.facebookAdsReportingEnabled || false,
+                    funnelsEnabled: updatePermissions.funnelsEnabled || false,
+                    leadValueEnabled: updatePermissions.leadValueEnabled || false,
+                    marketingEnabled: updatePermissions.marketingEnabled || false,
+                    membershipEnabled: updatePermissions.membershipEnabled || false,
+                    onlineListingsEnabled: updatePermissions.onlineListingsEnabled || false,
+                    opportunitiesEnabled: updatePermissions.opportunitiesEnabled || false,
+                    reviewsEnabled: updatePermissions.reviewsEnabled || false,
+                    settingsEnabled: updatePermissions.settingsEnabled || false,
+                    tagsEnabled: updatePermissions.tagsEnabled || false,
+                    triggersEnabled: updatePermissions.triggersEnabled || false,
+                    websitesEnabled: updatePermissions.websitesEnabled || false,
+                    workflowsEnabled: updatePermissions.workflowsEnabled || false,
+                };
+            }
+
+            return await makeAuthenticatedRequest(context, 'PUT', '/ghluser', accessToken, updateRequestBody);
+
+        default:
+            throw new NodeOperationError(context.getNode(), `Unknown user operation: ${operation}`);
+    }
 };
 
 async function handleLocationOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {
