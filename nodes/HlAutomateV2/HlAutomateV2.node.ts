@@ -56,6 +56,10 @@ export class HlAutomateV2 implements INodeType {
 						name: 'Location',
 						value: 'location',
 					},
+					{
+						name: 'Calendar Appointment',
+						value: 'calendarAppointment',
+					},
 				],
 				default: 'contact',
 			},
@@ -225,7 +229,30 @@ async function makeAuthenticatedRequest(context: IExecuteFunctions, method: IHtt
 }
 
 async function handleCalendarAppointmentOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {
+	switch (operation) {
+		case 'calendarBook': {
+			// Get all the form data
+			const locationId = context.getNodeParameter('locationId', itemIndex) as string;
+			const calendarId = context.getNodeParameter('calendarId', itemIndex) as string;
+			const selectedSlot = context.getNodeParameter('selectedSlot', itemIndex) as string;
+			const endAt = context.getNodeParameter('endAt', itemIndex) as string;
+			const title = context.getNodeParameter('title', itemIndex) as string;
 
+			// Prepare the request body
+			const requestBody = {
+				locationId,
+				calendarId,
+				selectedSlot,
+				endAt,
+				title,
+			};
+
+			// According to the memory, calendar operations use the '/ghlcalendarteam/' endpoint prefix
+			return await makeAuthenticatedRequest(context, 'POST', '/ghlcalendarteam/appointments_block_date', accessToken, requestBody);
+		}
+		default:
+			throw new NodeOperationError(context.getNode(), `Unknown calendar appointment operation: ${operation}`);
+	}
 };
 
 async function handleUserOperation(context: IExecuteFunctions, operation: string, itemIndex: number, accessToken: string): Promise<any> {

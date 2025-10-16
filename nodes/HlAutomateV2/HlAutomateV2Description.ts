@@ -1,6 +1,6 @@
 import { INodeProperties } from 'n8n-workflow';
 
-// Contact Operations
+// Operations
 export const hlAutomateV2Operations: INodeProperties[] = [
     {
         displayName: 'Operation',
@@ -91,9 +91,30 @@ export const hlAutomateV2Operations: INodeProperties[] = [
         ],
         default: 'get',
     },
+    // Calendar Appointment Operations
+    {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+            },
+        },
+        options: [
+            {
+                name: 'Book',
+                value: 'calendarBook',
+                description: 'Book a calendar appointment',
+                action: 'Book a calendar appointment',
+            },
+        ],
+        default: 'calendarBook',
+    },
 ];
 
-// Contact Fields
+// Fields
 export const hlAutomateV2Fields: INodeProperties[] = [
     // Contact ID field
     {
@@ -410,5 +431,76 @@ export const hlAutomateV2Fields: INodeProperties[] = [
                 default: '',
             },
         ],
+    },
+    // Calendar Appointment Fields
+    {
+        displayName: 'Location ID',
+        name: 'locationId',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['calendarBook'],
+            },
+        },
+        default: '',
+        description: 'The ID of the location',
+    },
+    {
+        displayName: 'Calendar ID',
+        name: 'calendarId',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['calendarBook'],
+            },
+        },
+        default: '',
+        description: 'The ID of the calendar',
+    },
+    {
+        displayName: 'Selected Slot',
+        name: 'selectedSlot',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['calendarBook'],
+            },
+        },
+        default: '',
+        description: 'ISO 8601 datetime with timezone offset, e.g. 2021-02-05T11:00:00+05:30',
+    },
+    {
+        displayName: 'End At',
+        name: 'endAt',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['calendarBook'],
+            },
+        },
+        default: '',
+        description: 'ISO 8601 datetime with timezone offset for the end time, e.g. 2021-02-05T11:30:00+05:30',
+    },
+    {
+        displayName: 'Title',
+        name: 'title',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['calendarBook'],
+            },
+        },
+        default: '',
+        description: 'Title for the appointment',
     },
 ];
