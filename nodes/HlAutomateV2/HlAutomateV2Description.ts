@@ -142,6 +142,24 @@ export const hlAutomateV2Operations: INodeProperties[] = [
                 description: 'Book a calendar appointment by date slot',
                 action: 'Book a calendar appointment by date slot',
             },
+            {
+                name: 'Create',
+                value: 'create',
+                description: 'Create a calendar appointment',
+                action: 'Create a calendar appointment',
+            },
+            {
+                name: 'Update',
+                value: 'update',
+                description: 'Update a calendar appointment',
+                action: 'Update a calendar appointment',
+            },
+            {
+                name: 'Get Many',
+                value: 'list',
+                description: 'List calendar appointments',
+                action: 'List calendar appointments',
+            },
         ],
         default: 'calendarBook',
     },
@@ -885,6 +903,7 @@ export const hlAutomateV2Fields: INodeProperties[] = [
         ],
     },
     // Calendar Appointment Fields
+    // Fields for calendarBook operation (existing)
     {
         displayName: 'Location ID',
         name: 'locationId',
@@ -955,4 +974,271 @@ export const hlAutomateV2Fields: INodeProperties[] = [
         default: '',
         description: 'Title for the appointment',
     },
+    
+    // Fields for list operation
+    {
+        displayName: 'Location ID',
+        name: 'locationId',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['list'],
+            },
+        },
+        default: '',
+        description: 'The ID of the location. Example: C2QujeCh8ZnC7al2InWR.',
+    },
+    {
+        displayName: 'Start Time',
+        name: 'startTime',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['list'],
+            },
+        },
+        default: '',
+        description: 'Start Time. Example: 2021-06-23T03:30:00+05:30.',
+    },
+    {
+        displayName: 'End Time',
+        name: 'endTime',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['list'],
+            },
+        },
+        default: '',
+        description: 'End Time. Example: 2021-06-23T04:30:00+05:30.',
+    },
+
+    // Fields for create operation
+    {
+        displayName: 'Title',
+        name: 'title',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create'],
+            },
+        },
+        default: '',
+        description: 'Title for the appointment. Example: Test Event.',
+    },
+    
+    // Shared fields for both create and update operations
+    {
+        displayName: 'Meeting Location Type',
+        name: 'meetingLocationType',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: '',
+        description: 'Meeting location type. If address is provided in the request body, the meetingLocationType defaults to custom. Possible values: [custom, zoom, gmeet, phone, address, ms_teams, google]. Example: custom.',
+    },
+    {
+        displayName: 'Meeting Location ID',
+        name: 'meetingLocationId',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: '',
+        description: 'The unique identifier for the meeting location. This value can be found in calendar.locationConfigurations or calendar.teamMembers[].locationConfigurations. Default value: default. Example: custom_0.',
+    },
+    {
+        displayName: 'Override Location Config',
+        name: 'overrideLocationConfig',
+        type: 'boolean',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: false,
+        description: 'Whether to override location config. false - If only meetingLocationId is provided. true - If only meetingLocationType is provided. Example: true.',
+    },
+    {
+        displayName: 'Appointment Status',
+        name: 'appointmentStatus',
+        type: 'options',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        options: [
+            {
+                name: 'Cancelled',
+                value: 'cancelled',
+            },
+            {
+                name: 'Confirmed',
+                value: 'confirmed',
+            },
+            {
+                name: 'Invalid',
+                value: 'invalid',
+            },
+            {
+                name: 'New',
+                value: 'new',
+            },
+            {
+                name: 'No Show',
+                value: 'noshow',
+            },
+            {
+                name: 'Showed',
+                value: 'showed',
+            },
+        ],
+        default: 'confirmed',
+    },
+    {
+        displayName: 'Assigned User ID',
+        name: 'assignedUserId',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: '',
+        description: 'Assigned User ID. Example: 0007BWpSzSwfiuSl0tR2.',
+    },
+    {
+        displayName: 'Description',
+        name: 'description',
+        type: 'string',
+        typeOptions: {
+            rows: 4,
+        },
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: '',
+        description: 'Appointment Description. Example: Booking a call to discuss the project.',
+    },
+    {
+        displayName: 'Address',
+        name: 'address',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: '',
+        description: 'Appointment Address. Example: Zoom.',
+    },
+    {
+        displayName: 'Ignore Date Range',
+        name: 'ignoreDateRange',
+        type: 'boolean',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: false,
+        description: 'Whether to ignore date range validation. If set to true, the minimum scheduling notice and date range would be ignored. Example: false.',
+    },
+    {
+        displayName: 'To Notify',
+        name: 'toNotify',
+        type: 'boolean',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: false,
+        description: 'Whether to send notification. If set to false, the automations will not run. Example: false.',
+    },
+    {
+        displayName: 'Ignore Free Slot Validation',
+        name: 'ignoreFreeSlotValidation',
+        type: 'boolean',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: false,
+        description: 'Whether to ignore free slot validation. If true the time slot validation would be avoided for any appointment creation (even the ignoreDateRange). Example: true.',
+    },
+    {
+        displayName: 'RRule',
+        name: 'rrule',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['create', 'update'],
+            },
+        },
+        default: '',
+        description: 'RRULE as per the iCalendar (RFC 5545) specification for recurring events. DTSTART is not required, instance IDs are calculated on the basis of startTime of the event. The rrule only be applied if ignoreFreeSlotValidation is true.',
+    },
+
+    // Fields for update operation
+    {
+        displayName: 'Event ID',
+        name: 'eventId',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['update'],
+            },
+        },
+        default: '',
+        description: 'The ID of the event to update',
+    },
+    {
+        displayName: 'Title',
+        name: 'title',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['calendarAppointment'],
+                operation: ['update'],
+            },
+        },
+        default: '',
+        description: 'Title for the appointment. Example: Test Event.',
+    },
+    // Note: Other shared fields (meetingLocationType, meetingLocationId, overrideLocationConfig, 
+    // appointmentStatus, assignedUserId, description, address, ignoreDateRange, toNotify, 
+    // ignoreFreeSlotValidation, rrule, locationId, startTime, endTime) are defined in the 
+    // shared section above to avoid duplication
+
 ];

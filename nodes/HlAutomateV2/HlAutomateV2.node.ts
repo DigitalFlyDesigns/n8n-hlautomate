@@ -254,6 +254,113 @@ async function handleCalendarAppointmentOperation(context: IExecuteFunctions, op
 			// According to the memory, calendar operations use the '/ghlcalendarteam/' endpoint prefix
 			return await makeAuthenticatedRequest(context, 'POST', '/ghlcalendarteam/appointments_block_date', accessToken, requestBody);
 		}
+		
+		case 'create': {
+			// Get all the form data for create
+			const title = context.getNodeParameter('title', itemIndex) as string;
+			const meetingLocationType = context.getNodeParameter('meetingLocationType', itemIndex, '') as string;
+			const meetingLocationId = context.getNodeParameter('meetingLocationId', itemIndex, '') as string;
+			const overrideLocationConfig = context.getNodeParameter('overrideLocationConfig', itemIndex, false) as boolean;
+			const appointmentStatus = context.getNodeParameter('appointmentStatus', itemIndex, '') as string;
+			const assignedUserId = context.getNodeParameter('assignedUserId', itemIndex, '') as string;
+			const description = context.getNodeParameter('description', itemIndex, '') as string;
+			const address = context.getNodeParameter('address', itemIndex, '') as string;
+			const ignoreDateRange = context.getNodeParameter('ignoreDateRange', itemIndex, false) as boolean;
+			const toNotify = context.getNodeParameter('toNotify', itemIndex, false) as boolean;
+			const ignoreFreeSlotValidation = context.getNodeParameter('ignoreFreeSlotValidation', itemIndex, false) as boolean;
+			const rrule = context.getNodeParameter('rrule', itemIndex, '') as string;
+			const calendarId = context.getNodeParameter('calendarId', itemIndex) as string;
+			const locationId = context.getNodeParameter('locationId', itemIndex) as string;
+			const contactId = context.getNodeParameter('contactId', itemIndex) as string;
+			const startTime = context.getNodeParameter('startTime', itemIndex) as string;
+			const endTime = context.getNodeParameter('endTime', itemIndex) as string;
+
+			// Prepare the request body
+			const requestBody: any = {
+				title,
+				calendarId,
+				locationId,
+				contactId,
+				startTime,
+				endTime,
+			};
+
+			// Add optional fields if they have values
+			if (meetingLocationType) requestBody.meetingLocationType = meetingLocationType;
+			if (meetingLocationId) requestBody.meetingLocationId = meetingLocationId;
+			if (overrideLocationConfig) requestBody.overrideLocationConfig = overrideLocationConfig;
+			if (appointmentStatus) requestBody.appointmentStatus = appointmentStatus;
+			if (assignedUserId) requestBody.assignedUserId = assignedUserId;
+			if (description) requestBody.description = description;
+			if (address) requestBody.address = address;
+			if (ignoreDateRange) requestBody.ignoreDateRange = ignoreDateRange;
+			if (toNotify) requestBody.toNotify = toNotify;
+			if (ignoreFreeSlotValidation) requestBody.ignoreFreeSlotValidation = ignoreFreeSlotValidation;
+			if (rrule) requestBody.rrule = rrule;
+
+			// According to the memory, calendar operations use the '/ghlcalendarteam/' endpoint prefix
+			return await makeAuthenticatedRequest(context, 'POST', '/ghlcalendarteam/appointments', accessToken, requestBody);
+		}
+		
+		case 'update': {
+			// Get all the form data for update
+			const eventId = context.getNodeParameter('eventId', itemIndex) as string;
+			const title = context.getNodeParameter('title', itemIndex, '') as string;
+			const meetingLocationType = context.getNodeParameter('meetingLocationType', itemIndex, '') as string;
+			const meetingLocationId = context.getNodeParameter('meetingLocationId', itemIndex, '') as string;
+			const overrideLocationConfig = context.getNodeParameter('overrideLocationConfig', itemIndex, false) as boolean;
+			const appointmentStatus = context.getNodeParameter('appointmentStatus', itemIndex, '') as string;
+			const assignedUserId = context.getNodeParameter('assignedUserId', itemIndex, '') as string;
+			const description = context.getNodeParameter('description', itemIndex, '') as string;
+			const address = context.getNodeParameter('address', itemIndex, '') as string;
+			const ignoreDateRange = context.getNodeParameter('ignoreDateRange', itemIndex, false) as boolean;
+			const toNotify = context.getNodeParameter('toNotify', itemIndex, false) as boolean;
+			const ignoreFreeSlotValidation = context.getNodeParameter('ignoreFreeSlotValidation', itemIndex, false) as boolean;
+			const rrule = context.getNodeParameter('rrule', itemIndex, '') as string;
+			const locationId = context.getNodeParameter('locationId', itemIndex) as string;
+			const startTime = context.getNodeParameter('startTime', itemIndex, '') as string;
+			const endTime = context.getNodeParameter('endTime', itemIndex, '') as string;
+
+			// Prepare the request body
+			const requestBody: any = {
+				eventId,
+				locationId,
+			};
+
+			// Add optional fields if they have values
+			if (title) requestBody.title = title;
+			if (meetingLocationType) requestBody.meetingLocationType = meetingLocationType;
+			if (meetingLocationId) requestBody.meetingLocationId = meetingLocationId;
+			if (overrideLocationConfig) requestBody.overrideLocationConfig = overrideLocationConfig;
+			if (appointmentStatus) requestBody.appointmentStatus = appointmentStatus;
+			if (assignedUserId) requestBody.assignedUserId = assignedUserId;
+			if (description) requestBody.description = description;
+			if (address) requestBody.address = address;
+			if (ignoreDateRange) requestBody.ignoreDateRange = ignoreDateRange;
+			if (toNotify) requestBody.toNotify = toNotify;
+			if (ignoreFreeSlotValidation) requestBody.ignoreFreeSlotValidation = ignoreFreeSlotValidation;
+			if (rrule) requestBody.rrule = rrule;
+			if (startTime) requestBody.startTime = startTime;
+			if (endTime) requestBody.endTime = endTime;
+
+			// According to the memory, calendar operations use the '/ghlcalendarteam/' endpoint prefix
+			return await makeAuthenticatedRequest(context, 'PUT', '/ghlcalendarteam/appointments', accessToken, requestBody);
+		}
+		
+		case 'list': {
+			// Get the required parameters for list operation
+			const locationId = context.getNodeParameter('locationId', itemIndex) as string;
+			const startTime = context.getNodeParameter('startTime', itemIndex) as string;
+			const endTime = context.getNodeParameter('endTime', itemIndex) as string;
+
+			// Build query parameters
+			const queryParams = `locationId=${encodeURIComponent(locationId)}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}`;
+
+			// According to the memory, calendar operations use the '/ghlcalendarteam/' endpoint prefix
+			const endpoint = `/ghlcalendarteam/appointments?${queryParams}`;
+			return await makeAuthenticatedRequest(context, 'GET', endpoint, accessToken);
+		}
+
 		default:
 			throw new NodeOperationError(context.getNode(), `Unknown calendar appointment operation: ${operation}`);
 	}
