@@ -585,8 +585,8 @@ async function handleContactOperation(context: IExecuteFunctions, operation: str
 			return await makeAuthenticatedRequest(context, 'DELETE', `/ghlcontact`, accessToken, requestBody);
 		}
 
-		case 'list':
-			return await makeAuthenticatedRequest(context, 'GET', '/ghlcontact', accessToken);
+		// case 'list':
+		// 	return await makeAuthenticatedRequest(context, 'GET', '/ghlcontact', accessToken);
 
 		default:
 			throw new NodeOperationError(context.getNode(), `Unknown contact operation: ${operation}`);

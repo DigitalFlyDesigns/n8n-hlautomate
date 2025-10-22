@@ -31,12 +31,12 @@ export const hlAutomateV2Operations: INodeProperties[] = [
                 description: 'Get a contact',
                 action: 'Get a contact',
             },
-            {
-                name: 'List',
-                value: 'list',
-                description: 'List all contacts',
-                action: 'List contacts',
-            },
+            // {
+            //     name: 'List',
+            //     value: 'list',
+            //     description: 'List all contacts',
+            //     action: 'List contacts',
+            // },
             {
                 name: 'Update',
                 value: 'update',
