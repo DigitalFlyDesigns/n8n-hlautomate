@@ -16,8 +16,7 @@ export class HlAutomate implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'HL Automate',
 		name: 'hlAutomate',
-		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
-		icon: 'file:hlautomate.svg',
+		icon: 'file:hlautomate1.svg',
 		group: ['automation'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
