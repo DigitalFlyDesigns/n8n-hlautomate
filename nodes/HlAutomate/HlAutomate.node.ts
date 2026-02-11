@@ -192,21 +192,34 @@ async function authenticateAndGetToken(context: IExecuteFunctions | ILoadOptions
 	const authOptions: IHttpRequestOptions = {
 		method: 'POST' as IHttpRequestMethods,
 		url: `${baseUrl}/auth/login`,
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: {
+			email: credentials.email,
+			password: credentials.password,
+		},
 		json: true,
-		// Body is injected by the Credential's 'authenticate' property because we use requestWithAuthentication
 	};
 
 	try {
-		// Use requestWithAuthentication to leverage the credential's configuration (automatically injecting email/password from body)
-		const authResponse = await (context.helpers as any).requestWithAuthentication('hlautomateApi', authOptions);
+		const authResponse = await context.helpers.httpRequest(authOptions);
 
 		if (authResponse.tokens && authResponse.tokens.access && authResponse.tokens.access.token) {
 			return authResponse.tokens.access.token;
 		} else {
-			throw new NodeOperationError(context.getNode(), 'Authentication failed: No access token received');
+			const node = 'getNode' in context ? (context as IExecuteFunctions).getNode() : undefined;
+			if (node) {
+				throw new NodeOperationError(node, 'Authentication failed: No access token received');
+			}
+			throw new Error('Authentication failed: No access token received');
 		}
 	} catch (error) {
-		throw new NodeOperationError(context.getNode(), `Authentication failed: ${error.message}`);
+		const node = 'getNode' in context ? (context as IExecuteFunctions).getNode() : undefined;
+		if (node) {
+			throw new NodeOperationError(node, `Authentication failed: ${error.message}`);
+		}
+		throw new Error(`Authentication failed: ${error.message}`);
 	}
 }
 

@@ -204,7 +204,7 @@ const contactFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Email to search for (V2)',
+		description: 'Email to search for',
 	},
 	{
 		displayName: 'Phone',
@@ -217,7 +217,7 @@ const contactFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Phone number to search for (V2)',
+		description: 'Phone number to search for',
 	},
 	{
 		displayName: 'Location ID',
@@ -426,7 +426,7 @@ const locationFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Business Information (V1)',
+		displayName: 'Business Information',
 		name: 'businessInfo',
 		type: 'collection',
 		placeholder: 'Add Field',
@@ -437,7 +437,7 @@ const locationFields: INodeProperties[] = [
 			},
 		},
 		default: {},
-		description: 'Business Information (Standard for V1)',
+		description: 'Business Information',
 		options: [
 			{
 				displayName: 'Address',
@@ -495,7 +495,7 @@ const locationFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Contact Information (V1)',
+		displayName: 'Contact Information',
 		name: 'contactInfo',
 		type: 'collection',
 		placeholder: 'Add Field',
@@ -506,7 +506,7 @@ const locationFields: INodeProperties[] = [
 			},
 		},
 		default: {},
-		description: 'Contact Information (Standard for V1)',
+		description: 'Contact Information',
 		options: [
 			{
 				displayName: 'Email',
@@ -536,7 +536,7 @@ const locationFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Additional Options (V1)',
+		displayName: 'Additional Options',
 		name: 'additionalOptions',
 		type: 'collection',
 		placeholder: 'Add Option',
@@ -547,7 +547,7 @@ const locationFields: INodeProperties[] = [
 			},
 		},
 		default: {},
-		description: 'Additional Options (Standard for V1)',
+		description: 'Additional Options',
 		options: [
 			{
 				displayName: 'Custom Values',
@@ -569,7 +569,7 @@ const locationFields: INodeProperties[] = [
 
 	// V2 Flat Data
 	{
-		displayName: 'Location Data (V2)',
+		displayName: 'Location Data',
 		name: 'locationData',
 		type: 'collection',
 		placeholder: 'Add Field',
@@ -580,7 +580,7 @@ const locationFields: INodeProperties[] = [
 			},
 		},
 		default: {},
-		description: 'Location Data (Standard for V2)',
+		description: 'Location Data',
 		options: [
 			{
 				displayName: 'Address',
@@ -702,7 +702,7 @@ const userFields: INodeProperties[] = [
 		default: '',
 		description: 'The ID of the user to update',
 	},
-	// Search Fields (V2)
+	// Search Fields
 	{
 		displayName: 'Email',
 		name: 'email',
@@ -715,7 +715,7 @@ const userFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Email to search for (V2)',
+		description: 'Email to search for',
 	},
 	// User Properties (Create/Update) - Merging V1 and V2
 	{
@@ -1206,7 +1206,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Contact ID (V2)',
+		description: 'Contact ID',
 	},
 	{
 		displayName: 'Start Time',
@@ -1219,7 +1219,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Start time (V2)',
+		description: 'Start time',
 	},
 	{
 		displayName: 'End Time',
@@ -1232,7 +1232,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'End time (V2)',
+		description: 'End time',
 	},
 	// V2 Book Fields
 	{
@@ -1261,7 +1261,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Appointment ID (V1)',
+		description: 'Appointment ID',
 	},
 	{
 		displayName: 'Event ID',
@@ -1274,7 +1274,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Event ID (V2)',
+		description: 'Event ID',
 	},
 	{
 		displayName: 'Status',
@@ -1296,7 +1296,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: 'confirmed',
-		description: 'Status of the appointment (V1)',
+		description: 'Status of the appointment',
 	},
 	{
 		displayName: 'Appointment Status',
@@ -1309,7 +1309,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Status (V2)',
+		description: 'Status',
 	},
 	// Other V2 Create fields
 	{
