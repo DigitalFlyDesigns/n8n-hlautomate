@@ -1,8 +1,12 @@
 {
 	"node": "n8n-nodes-base.hlAutomate",
-	"nodeVersion": "1.0",
+	"nodeVersion": "1.0.7",
 	"codexVersion": "1.0",
-	"categories": ["Automation", "CRM", "Marketing"],
+	"categories": [
+		"Automation",
+		"CRM",
+		"Marketing"
+	],
 	"resources": {
 		"credentialDocumentation": [
 			{
