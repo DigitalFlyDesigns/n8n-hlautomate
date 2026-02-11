@@ -11,6 +11,23 @@ export class HlAutomateApi implements ICredentialType {
 	documentationUrl = 'https://hlautomate.com';
 	properties: INodeProperties[] = [
 		{
+			displayName: 'API Version',
+			name: 'apiVersion',
+			type: 'options',
+			options: [
+				{
+					name: 'V1',
+					value: 'v1',
+				},
+				{
+					name: 'V2',
+					value: 'v2',
+				},
+			],
+			default: 'v1',
+			required: true,
+		},
+		{
 			displayName: 'Email',
 			name: 'email',
 			type: 'string',
@@ -36,6 +53,11 @@ export class HlAutomateApi implements ICredentialType {
 			typeOptions: {
 				password: true,
 			},
+			displayOptions: {
+				show: {
+					apiVersion: ['v1'],
+				},
+			},
 			required: true,
 			description: 'Your GoHighLevel Agency API Key',
 		},
@@ -51,6 +73,10 @@ export class HlAutomateApi implements ICredentialType {
 			headers: {
 				'Content-Type': 'application/json',
 			},
+			body: {
+				email: '={{$credentials.email}}',
+				password: '={{$credentials.password}}',
+			},
 		},
 	};
 
@@ -58,16 +84,9 @@ export class HlAutomateApi implements ICredentialType {
 	// This will verify email/password work and return the token structure
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://api.hlautomate.com/v1',
+			baseURL: '={{$credentials.apiVersion === "v2" ? "https://api.hlautomate.com/v2" : "https://api.hlautomate.com/v1"}}',
 			url: '/auth/login',
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: {
-				email: '={{$credentials.email}}',
-				password: '={{$credentials.password}}',
-			},
 		},
 	};
 }
