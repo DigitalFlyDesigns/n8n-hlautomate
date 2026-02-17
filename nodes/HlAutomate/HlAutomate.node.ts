@@ -212,6 +212,8 @@ async function authenticateAndGetToken(context: IExecuteFunctions | ILoadOptions
 			if (node) {
 				throw new NodeOperationError(node, 'Authentication failed: No access token received');
 			}
+			// Fallback if node is not available (should not happen in standard execution)
+			// eslint-disable-next-line n8n-nodes-base/node-execute-block-wrong-error-thrown
 			throw new Error('Authentication failed: No access token received');
 		}
 	} catch (error) {
@@ -219,6 +221,7 @@ async function authenticateAndGetToken(context: IExecuteFunctions | ILoadOptions
 		if (node) {
 			throw new NodeOperationError(node, `Authentication failed: ${error.message}`);
 		}
+		// eslint-disable-next-line n8n-nodes-base/node-execute-block-wrong-error-thrown
 		throw new Error(`Authentication failed: ${error.message}`);
 	}
 }

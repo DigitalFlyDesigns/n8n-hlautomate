@@ -337,7 +337,7 @@ const contactFields: INodeProperties[] = [
 				name: 'timezone',
 				type: 'options',
 				default: '',
-				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getTimezones',
 				},
@@ -437,7 +437,7 @@ const locationFields: INodeProperties[] = [
 			},
 		},
 		default: {},
-		description: 'Business Information',
+
 		options: [
 			{
 				displayName: 'Address',
@@ -506,7 +506,7 @@ const locationFields: INodeProperties[] = [
 			},
 		},
 		default: {},
-		description: 'Contact Information',
+
 		options: [
 			{
 				displayName: 'Email',
@@ -547,7 +547,7 @@ const locationFields: INodeProperties[] = [
 			},
 		},
 		default: {},
-		description: 'Additional Options',
+
 		options: [
 			{
 				displayName: 'Custom Values',
@@ -580,7 +580,7 @@ const locationFields: INodeProperties[] = [
 			},
 		},
 		default: {},
-		description: 'Location Data',
+
 		options: [
 			{
 				displayName: 'Address',
@@ -1206,7 +1206,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Contact ID',
+
 	},
 	{
 		displayName: 'Start Time',
@@ -1219,7 +1219,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Start time',
+
 	},
 	{
 		displayName: 'End Time',
@@ -1232,7 +1232,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'End time',
+
 	},
 	// V2 Book Fields
 	{
@@ -1261,7 +1261,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Appointment ID',
+
 	},
 	{
 		displayName: 'Event ID',
@@ -1274,7 +1274,7 @@ const calendarAppointmentFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Event ID',
+
 	},
 	{
 		displayName: 'Status',
@@ -1282,11 +1282,11 @@ const calendarAppointmentFields: INodeProperties[] = [
 		type: 'options',
 		// V1 required, V2 optional? V2 has 'appointmentStatus'
 		options: [
-			{ name: 'Confirmed', value: 'confirmed' },
 			{ name: 'Cancelled', value: 'cancelled' },
-			{ name: 'Showed', value: 'showed' },
-			{ name: 'No Show', value: 'noshow' },
+			{ name: 'Confirmed', value: 'confirmed' },
 			{ name: 'Invalid', value: 'invalid' },
+			{ name: 'No Show', value: 'noshow' },
+			{ name: 'Showed', value: 'showed' },
 			// V2 statuses are likely similar but strings
 		],
 		displayOptions: {
